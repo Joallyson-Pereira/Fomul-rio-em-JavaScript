@@ -71,3 +71,8 @@ label {
     border: none;
 }
 
+.error-text {
+    color: red;
+    font-size: 12px;
+}
+
