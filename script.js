@@ -19,12 +19,32 @@ class ValidaFormulario {
     camposSaoValidos() {
         let valid = true;
 
+        for(let errorText of this.formulario.querySelectorAll('.error-text')) {
+            errorText.remove();
+        }
+
         for (let campo of this.formulario.querySelectorAll('.input')) {
+            const label = campo.previousElementSibling.innerText;
             if(!campo.value) {
-                this.criaErro(campo, 'Esse campo não pode estar em branco')
+                this.criaErro(campo, `Campo ${label} não pode estar em branco`)
+                valid = false;
+            }
+
+            if(campo.classList.contains('CPF')) {
+                if (!this.validaCPF(campo)) valid = false;
             }
     
         }
+    }
+
+    validaCPF(campo) {
+        const cpf = new ValidaCPF(campo.value);
+
+        if(!cpf.valida()) {
+            this.criaErro(campo, 'CPF inválido.');
+            return false;
+        }
+        return true;
     }
 
     criaErro(campo, msg) {
